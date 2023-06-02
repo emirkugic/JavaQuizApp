@@ -71,7 +71,7 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
         ) {
             OutlinedTextField(
                 value = username.value,
-                onValueChange = { username.value = it },
+                onValueChange = { username.value = it.replace("\n", "") },
                 label = { Text("Username") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -80,7 +80,7 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
 
             OutlinedTextField(
                 value = password.value,
-                onValueChange = { password.value = it },
+                onValueChange = { password.value = it.replace("\n", "") },
                 label = { Text("Password") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -89,7 +89,7 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
 
             OutlinedTextField(
                 value = confirmPassword.value,
-                onValueChange = { confirmPassword.value = it },
+                onValueChange = { confirmPassword.value = it.replace("\n", "") },
                 label = { Text("Confirm Password") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -108,11 +108,11 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
                         }
                     } else {
                         viewModel.viewModelScope.launch {
-                            try {
-                                viewModel.register(username.value, password.value)
+                            val registerError = viewModel.register(username.value, password.value)
+                            if (registerError != null) {
+                                snackbarHostState.showSnackbar(registerError)
+                            } else {
                                 navController.navigate(Screen.MainMenu.route)
-                            } catch (e: Exception) {
-                                snackbarHostState.showSnackbar("Registration failed: ${e.message}")
                             }
                         }
                     }

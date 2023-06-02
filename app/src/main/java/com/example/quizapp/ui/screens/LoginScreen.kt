@@ -73,7 +73,7 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
         ) {
             OutlinedTextField(
                 value = username.value,
-                onValueChange = { username.value = it },
+                onValueChange = { username.value = it.replace("\n", "") },
                 label = { Text("Username") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -82,7 +82,7 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
 
             OutlinedTextField(
                 value = password.value,
-                onValueChange = { password.value = it },
+                onValueChange = { password.value = it.replace("\n", "") },
                 label = { Text("Password") },
                 modifier = Modifier.fillMaxWidth()
             )
