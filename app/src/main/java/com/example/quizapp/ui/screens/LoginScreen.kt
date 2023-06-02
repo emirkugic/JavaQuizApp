@@ -1,4 +1,5 @@
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -25,7 +29,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.quizapp.R
 import com.example.quizapp.ui.Screen
+import com.example.quizapp.ui.theme.md_theme_dark_primary
+import com.example.quizapp.ui.theme.md_theme_light_primary
 import kotlinx.coroutines.launch
+import androidx.compose.material3.MaterialTheme as MaterialTheme3
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +47,7 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 70.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SnackbarHost(
             hostState = snackbarHostState,
@@ -49,20 +58,15 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
         Column(
             modifier = Modifier.padding(vertical = 32.dp),
         ) {
-            Image(
-                painterResource(R.drawable.logo),
-                contentDescription = "Quiz Logo",
-                modifier = Modifier
-                    .width(120.dp)
-                    .height(120.dp)
-                    .padding(bottom = 16.dp)
-            )
             Text(
                 text = "Java Quiz App",
                 color = Color.Blue,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
+            Spacer(modifier = Modifier.height(16.dp))
+
+
         }
 
         Column(
@@ -71,6 +75,13 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Image(
+                painterResource(R.drawable.logo),
+                contentDescription = "Quiz Logo",
+                modifier = Modifier
+                    .width(150.dp)
+                    .height(190.dp)
+            )
             OutlinedTextField(
                 value = username.value,
                 onValueChange = { username.value = it.replace("\n", "") },
@@ -87,7 +98,9 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
                 modifier = Modifier.fillMaxWidth()
             )
 
+
             Spacer(modifier = Modifier.height(16.dp))
+
 
             Button(
                 onClick = {
@@ -120,5 +133,8 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
                 Text("Register")
             }
         }
+
+
+
     }
 }

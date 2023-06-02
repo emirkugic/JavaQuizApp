@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.quizapp.R
 
+
 @Composable
 fun MainMenuScreen(navController: NavController, viewModel: QuizViewModel) {
     Column(
