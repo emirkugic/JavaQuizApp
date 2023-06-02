@@ -14,11 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.viewModelScope
 import com.example.quizapp.R
 import com.example.quizapp.ui.Screen
@@ -45,35 +53,25 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
         )
 
         Column(
-            modifier = Modifier.padding(vertical = 32.dp),
-        ) {
-            Image(
-                painterResource(R.drawable.logo),
-                contentDescription = "Quiz Logo",
-                modifier = Modifier
-                    .width(120.dp)
-                    .height(120.dp)
-                    .padding(bottom = 16.dp)
-            )
-            Text(
-                text = "Java Quiz App",
-                color = Color.Blue,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
-
-        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Image(
+                painterResource(R.drawable.icon),
+                contentDescription = "Quiz Logo",
+                modifier = Modifier
+                    .width(150.dp)
+                    .height(190.dp)
+            )
+
             OutlinedTextField(
                 value = username.value,
                 onValueChange = { username.value = it.replace("\n", "") },
                 label = { Text("Username") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -82,7 +80,8 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
                 value = password.value,
                 onValueChange = { password.value = it.replace("\n", "") },
                 label = { Text("Password") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -91,7 +90,8 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
                 value = confirmPassword.value,
                 onValueChange = { confirmPassword.value = it.replace("\n", "") },
                 label = { Text("Confirm Password") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -117,10 +117,32 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
                         }
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .width(300.dp),
             ) {
                 Text("Register")
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            val annotatedString = buildAnnotatedString {
+                append("Already have an account? ")
+                withStyle(
+                    style = SpanStyle(textDecoration = TextDecoration.Underline)
+                ) {
+                    append("Login")
+                }
+            }
+
+            Text(
+                text = annotatedString,
+                color = MaterialTheme.colorScheme.scrim,
+                modifier = Modifier
+                    .clickable { navController.navigate(Screen.Login.route) }
+            )
         }
     }
 }
