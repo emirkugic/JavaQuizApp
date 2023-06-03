@@ -29,5 +29,11 @@ fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int)
         ) {
             Text("Back to Main Menu")
         }
+
+        Image(
+            painter = painterResource(R.drawable.java1),
+            contentDescription = "Your GIF",
+            modifier = Modifier.size(200.dp)
+        )
     }
 }

@@ -1,9 +1,13 @@
 package com.example.quizapp.data
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+
 data class QuizQuestion(
     val question: String,
     val options: List<String>,
-    val correctAnswer: String
+    val correctAnswer: String,
+    val selectedOption: MutableState<String?> = mutableStateOf(null)
 )
 
 object QuizDataSource {

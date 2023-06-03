@@ -1,14 +1,18 @@
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -30,30 +34,28 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun QuizCard(question: QuizQuestion, selectedOption: MutableState<String>) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .shadow(4.dp),
-        backgroundColor = Color.White // Set the background color to white
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(text = question.question)
+        Text(text = question.question)
 
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-            question.options.forEach { option ->
-                Button(
-                    onClick = { selectedOption.value = option },
-                    colors = ButtonDefaults.buttonColors(
-                        /*backgroundColor = if (selectedOption.value == option) MaterialTheme.colors.primary else MaterialTheme.colors.surface*/
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = option)
-                }
+        question.options.forEach { option ->
+            Button(
+                onClick = { selectedOption.value = option },
+                colors = if (selectedOption.value == option) {
+                    ButtonDefaults.buttonColors(colorScheme.onPrimaryContainer)
+                } else {
+                    ButtonDefaults.buttonColors(colorScheme.primary)
+                },
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .width(300.dp),
+
+            ) {
+                Text(text = option)
             }
         }
     }
@@ -120,37 +122,51 @@ fun QuizScreen(navController: NavController, difficulty: String?, viewModel: Qui
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = {
-                if (selectedOption.value == currentQuestion?.correctAnswer) {
-                    score.value++
-                }
-                selectedOption.value = ""
-                currentQuestionIndex.value++
-
-                // Check if the quiz is finished
-                if (currentQuestionIndex.value == questions.size) {
-                    // Update the score in the ViewModel
-                    viewModel.score = score.value
-
-                    // Update the score in the database
-                    viewModel.viewModelScope.launch {
-                        when (difficulty) {
-                            "easy" -> viewModel.updateEasyScore(viewModel.username!!, score.value)
-                            "medium" -> viewModel.updateMediumScore(viewModel.username!!, score.value)
-                            "hard" -> viewModel.updateHardScore(viewModel.username!!, score.value)
-                        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 50.dp),
+            horizontalArrangement = Arrangement.End
+        )
+        {
+            Text(
+                text = "Next",
+                color = colorScheme.scrim,
+                modifier = Modifier.clickable {
+                    if (selectedOption.value == currentQuestion?.correctAnswer) {
+                        score.value++
                     }
+                    selectedOption.value = ""
+                    currentQuestionIndex.value++
 
-                    // Navigate to the ResultsScreen
-                    navController.navigate(Screen.Results(score.value, questions.size).route)
+                    // Check if the quiz is finished
+                    if (currentQuestionIndex.value == questions.size) {
+                        // Update the score in the ViewModel
+                        viewModel.score = score.value
+
+                        // Update the score in the database
+                        viewModel.viewModelScope.launch {
+                            when (difficulty) {
+                                "easy" -> viewModel.updateEasyScore(viewModel.username!!, score.value)
+                                "medium" -> viewModel.updateMediumScore(viewModel.username!!, score.value)
+                                "hard" -> viewModel.updateHardScore(viewModel.username!!, score.value)
+                            }
+                        }
+
+                        // Navigate to the ResultsScreen
+                        navController.navigate(Screen.Results(score.value, questions.size).route)
+                    }
                 }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Next")
-            Icon(Icons.Default.ArrowForward, contentDescription = "Next")
+            )
+            //add arrow icon here
+            Icon(
+                Icons.Default.ArrowForward,
+                contentDescription = "Next",
+                modifier = Modifier.padding(start = 4.dp)
+            )
+
         }
+
     }
 }
 
