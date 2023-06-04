@@ -69,5 +69,9 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
     debugImplementation 'androidx.compose.ui:ui-tooling'
 
+    //gif
+    implementation "io.coil-kt:coil-compose:2.1.0"
+    implementation "io.coil-kt:coil-gif:2.1.0"
+
 
 }

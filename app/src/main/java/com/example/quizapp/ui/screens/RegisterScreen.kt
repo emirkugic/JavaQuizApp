@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.viewModelScope
@@ -68,7 +69,7 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
 
             OutlinedTextField(
                 value = username.value,
-                onValueChange = { username.value = it.replace("\n", "") },
+                onValueChange = { username.value = it.trim().replace("\n", "") },
                 label = { Text("Username") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
@@ -80,6 +81,7 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
                 value = password.value,
                 onValueChange = { password.value = it.replace("\n", "") },
                 label = { Text("Password") },
+                visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
             )
@@ -90,6 +92,7 @@ fun RegisterScreen(navController: NavController, viewModel: QuizViewModel) {
                 value = confirmPassword.value,
                 onValueChange = { confirmPassword.value = it.replace("\n", "") },
                 label = { Text("Confirm Password") },
+                visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
             )

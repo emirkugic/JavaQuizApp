@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -32,8 +33,6 @@ import androidx.navigation.NavController
 import com.example.quizapp.R
 import com.example.quizapp.ui.Screen
 import kotlinx.coroutines.launch
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,8 +68,8 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
             )
             OutlinedTextField(
                 value = username.value,
-                onValueChange = { username.value = it.replace("\n", "") },
-                label = { Text("Username",) },
+                onValueChange = { username.value = it.trim().replace("\n", "") },
+                label = { Text("Username") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
             )
@@ -82,6 +81,7 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
                 onValueChange = { password.value = it.replace("\n", "") },
                 label = { Text("Password") },
                 modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation(),
                 shape = RoundedCornerShape(8.dp)
             )
 
@@ -129,7 +129,6 @@ fun LoginScreen(navController: NavController, viewModel: QuizViewModel) {
                     .clickable { navController.navigate(Screen.Register.route) }
                     .padding(top = 10.dp)
             )
-
         }
     }
 }
