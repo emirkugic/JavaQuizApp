@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 
 class AppViewModel(private val repository: AppRepository) : ViewModel() {
 
-    // User-related operations
     fun registerUser(username: String, password: String) {
         val user = User(username, password)
         viewModelScope.launch {
@@ -19,6 +18,5 @@ class AppViewModel(private val repository: AppRepository) : ViewModel() {
 
     fun loginUser(username: String, password: String) = viewModelScope.launch {
         val user = repository.loginUser(username, password)
-        // Handle user login here
     }
 }

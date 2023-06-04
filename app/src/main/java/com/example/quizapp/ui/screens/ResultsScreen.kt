@@ -9,9 +9,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
@@ -27,27 +31,40 @@ import kotlin.random.Random
 
 @Composable
 fun ResultsScreen(navController: NavController, score: Int, totalQuestions: Int) {
-    Column(
+    val isDarkMode = isSystemInDarkTheme()
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+            .background(color = Color.Black)
     ) {
-
-        Randomizer(score)
-        Text(text = "Quiz Finished!")
-        Text(text = "Your score: $score / $totalQuestions")
-        Button(
-            onClick = { navController.navigate(Screen.MainMenu.route) },
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+        Image(
+            painter = painterResource(if (isDarkMode) R.drawable.results_light else R.drawable.results_dark),
+            contentDescription = "Background",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
+        Column(
             modifier = Modifier
-                .padding(top = 50.dp)
-                .width(200.dp)
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text("Back to Main Menu")
+            Randomizer(score)
+            Text(text = "Quiz Finished!")
+            Text(text = "Your score: $score / $totalQuestions")
+            Button(
+                onClick = { navController.navigate(Screen.MainMenu.route) },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+                modifier = Modifier
+                    .padding(top = 50.dp)
+                    .width(200.dp)
+            ) {
+                Text("Back to Main Menu")
+            }
+            Spacer(modifier = Modifier.height(16.dp))
         }
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

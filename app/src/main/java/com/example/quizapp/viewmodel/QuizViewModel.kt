@@ -40,12 +40,10 @@ class QuizViewModel(private val userDao: UserDao) : ViewModel() {
     }
 
     suspend fun register(username: String, password: String): String? {
-        // Check if username contains only alphanumeric characters
         if (!username.all { it.isLetterOrDigit() }) {
             return "Username can only contain alphanumeric characters"
         }
 
-        // Check if password is at least 8 characters long
         if (password.length < 8) {
             return "Password must be at least 8 characters long"
         }
@@ -61,7 +59,7 @@ class QuizViewModel(private val userDao: UserDao) : ViewModel() {
         val user = userDao.getUser(username)
         return if (user != null && user.password == password) {
             this.username = user.username
-            this.score = 0 // You might want to retrieve the actual score from a database
+            this.score = 0
             true
         } else {
             false
@@ -108,7 +106,4 @@ class QuizViewModel(private val userDao: UserDao) : ViewModel() {
             println("Failed to update hard score for user $username")
         }
     }
-
-
-
 }
