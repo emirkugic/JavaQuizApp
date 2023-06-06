@@ -50,6 +50,9 @@ class QuizViewModel(private val userDao: UserDao) : ViewModel() {
 
         val user = User(username, password)
         userDao.register(user)
+
+        //caused the crash when registering
+        this.username = user.username
         return null
     }
 
